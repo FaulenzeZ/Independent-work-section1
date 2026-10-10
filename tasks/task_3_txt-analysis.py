@@ -2,25 +2,17 @@ import string
 from collections import Counter
 
 with open('text.txt', 'r', encoding='utf-8') as file:
-    text = file.read()
+    text = file.read().lower()
 
-text = text.lower()
-
-punctuation_to_remove = string.punctuation + '—–'
-for char in punctuation_to_remove:
+for char in string.punctuation + '—–':
     text = text.replace(char, ' ')
 
-words = text.split()
+words = [word for word in text.split() if len(word) >= 4]
 
 word_counts = Counter(words)
 max_frequency = max(word_counts.values())
 
-frequent_words = []
-for word, count in word_counts.items():
-    if count == max_frequency:
-        frequent_words.append(word)
-
+frequent_words = [word for word, count in word_counts.items() if count == max_frequency]
 best_word = min(frequent_words)
-count = max_frequency
 
-print(f"Чаще всего встречается слово: '{best_word}' (повторов: {count})")
+print(f"Чаще всего встречается слово: '{best_word}' (повторов: {max_frequency})")
